@@ -161,6 +161,15 @@ zend_hash_str_update_ptr(HashTable *ht, const char *str, size_t len, void *pData
 }
 
 static zend_always_inline void *
+zend_hash_str_update_mem(HashTable *ht, const char *str, size_t len, void *pData, size_t size)
+{
+    if (zend_hash_update(ht, str, len + 1, (void *)&pData, size, NULL) == SUCCESS) {
+        return pData;
+    }
+    return NULL;
+}
+
+static zend_always_inline void *
 zend_hash_index_update_ptr(HashTable *ht, zend_ulong h, void *pData)
 {
     if (zend_hash_index_update(ht, h, (void **)&pData, sizeof(void *), NULL) == SUCCESS) {
